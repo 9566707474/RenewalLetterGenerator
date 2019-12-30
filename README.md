@@ -1,4 +1,4 @@
-# RenewalLatterGenerator
+# RenewalLetterGenerator
 Sample application to create a renewal invitation letters for the customers from a fictitious insurance company.
 
 ## Application Architecture
