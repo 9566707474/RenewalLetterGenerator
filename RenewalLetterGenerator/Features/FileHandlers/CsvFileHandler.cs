@@ -62,7 +62,7 @@
         {
             var attributes = line.Split(Delimiter);
 
-            if (attributes != null && attributes.Length == 7)
+            if (attributes != null && attributes.Length >= 7)
             {
                 return new CustomerProduct()
                 {

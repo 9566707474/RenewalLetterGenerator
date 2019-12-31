@@ -2,7 +2,6 @@
 {
     using RenewalLetterGenerator.Common;
     using RenewalLetterGenerator.Exceptions;
-    using RenewalLetterGenerator.Models;
     using System;
 
     /// <summary>
