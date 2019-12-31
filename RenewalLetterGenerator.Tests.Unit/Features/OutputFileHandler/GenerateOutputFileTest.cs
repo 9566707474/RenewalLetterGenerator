@@ -14,7 +14,7 @@
     [TestClass]
     public class GenerateOutputFileTest
     {
-        private GenerateOutputFile underTest;
+        private GenerateOutputFile<CustomerProduct> underTest;
 
         private Mock<IFileSystem> mockFileSystem;
 
@@ -31,14 +31,14 @@
             filePath = string.Empty;
             loadTemplate = string.Empty;
 
-            underTest = new GenerateOutputFile();
+            underTest = new GenerateOutputFile<CustomerProduct>();
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvitationNotGeneratedException))]
         public void TestGenerateOutputFileWithEmptyCustomerProduct()
         {
-            underTest = new GenerateOutputFile() { CustomerProduct = customerProduct, FileSystem = mockFileSystem.Object, FilePath = filePath };
+            underTest = new GenerateOutputFile<CustomerProduct>() { GenericProperty = customerProduct, FileSystem = mockFileSystem.Object, FilePath = filePath };
             underTest.Start();
         }
 
@@ -47,10 +47,11 @@
         {
             customerProduct = BuildCustomerProduct();
             OutputTemplate.Load = loadTemplate;
-            underTest = new GenerateOutputFile() { CustomerProduct = customerProduct, FileSystem = mockFileSystem.Object, FilePath = filePath };
+            var filePath = string.Concat(customerProduct.Id, '_', customerProduct.FirstName);
+            underTest = new GenerateOutputFile<CustomerProduct>() { GenericProperty = customerProduct, FileSystem = mockFileSystem.Object, FilePath = filePath };
             underTest.Start();
-            var fileName = string.Concat(customerProduct.Id, '_', customerProduct.FirstName);
-            Assert.IsTrue(underTest.FilePath.Contains(fileName));
+
+            Assert.AreEqual(underTest.FilePath, filePath);
         }
 
         [TestMethod]
@@ -59,7 +60,7 @@
         {
             customerProduct = BuildCustomerProduct();
             OutputTemplate.Load = null;
-           underTest = new GenerateOutputFile() { CustomerProduct = customerProduct, FileSystem = mockFileSystem.Object, FilePath = filePath };
+            underTest = new GenerateOutputFile<CustomerProduct>() { GenericProperty = customerProduct, FileSystem = mockFileSystem.Object, FilePath = filePath };
             underTest.Start();
         }
 

@@ -8,9 +8,9 @@
     /// <summary>
     /// Used to Generate invitation letter
     /// </summary>
-    public class GenerateOutputFile
+    public class GenerateOutputFile<T>
     {
-        public CustomerProduct CustomerProduct { get; set; }
+        public T GenericProperty { get; set; }
 
         public IFileSystem FileSystem { get; set; }
 
@@ -23,18 +23,11 @@
         {
             try
             {
-                if (!FilePath.EndsWith("\\"))
-                {
-                    FilePath = FilePath + "\\";
-                }
-
-                FilePath = FilePath + CustomerProduct.Id + "_" + CustomerProduct.FirstName + FileTypes.Text;
-
                 var invitationTemplate = OutputTemplate.Get;
 
                 foreach (var keyValue in OutputMapping.Columns)
                 {
-                    invitationTemplate = invitationTemplate.Replace(keyValue.Key, GetPropertyValue(CustomerProduct, keyValue.Value).ToString());
+                    invitationTemplate = invitationTemplate.Replace(keyValue.Key, GetPropertyValue(GenericProperty, keyValue.Value).ToString());
                 }
 
                 if (!FileSystem.FileExists(FilePath))

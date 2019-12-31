@@ -28,6 +28,8 @@
 
         private readonly IDataExtractor dataExtractor;
 
+        private static readonly string UnderscoreSymbol = "_";
+
         public ProcessEngine(IConfigurationManagerFacade ConfigurationManagerFacade, IFileSystem fileSystem, IDataExtractor dataExtractor)
         {
             this.fileSystem = fileSystem;
@@ -86,10 +88,15 @@
         /// <param name="customerProducts">collectuion of customer products</param>
         private void WriteOutput(ICollection<CustomerProduct> customerProducts)
         {
-            var generateOutputFile = new ConcurrentBag<GenerateOutputFile>();
+            var generateOutputFile = new ConcurrentBag<GenerateOutputFile<CustomerProduct>>();
             foreach (var item in customerProducts)
             {
-                generateOutputFile.Add(new GenerateOutputFile() { CustomerProduct = item, FileSystem = fileSystem, FilePath = ConfigurationManagerFacade.OutputFileLocation });
+                generateOutputFile.Add(new GenerateOutputFile<CustomerProduct>()
+                {
+                    GenericProperty = item,
+                    FileSystem = fileSystem,
+                    FilePath = Path.Combine(ConfigurationManagerFacade.OutputFileLocation, string.Concat(item.Id, UnderscoreSymbol, item.Surname, FileTypes.Text))
+                });
             }
 
             var parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount };
