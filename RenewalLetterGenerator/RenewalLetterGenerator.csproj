@@ -62,7 +62,6 @@
     <Compile Include="Exceptions\FileNotProcessedException.cs" />
     <Compile Include="Exceptions\InvitationNotGeneratedException.cs" />
     <Compile Include="Exceptions\RuleException.cs" />
-    <Compile Include="Extentions\StringExtention.cs" />
     <Compile Include="Features\DataExtractor\DataExtractor.cs" />
     <Compile Include="Features\DataExtractor\IDataExtractor.cs" />
     <Compile Include="Features\FileHandlers\CsvFileHandler.cs" />
