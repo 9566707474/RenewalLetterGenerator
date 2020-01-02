@@ -65,6 +65,7 @@
     <Compile Include="Builders\Models\CustomerModelBuilder.cs" />
     <Compile Include="Builders\Models\CustomerProductModelBuilder.cs" />
     <Compile Include="Common\ConfigurationManagerFacadeTest.cs" />
+    <Compile Include="Common\FileSystemTest.cs" />
     <Compile Include="Features\DataExtractor\DataExtractorTest.cs" />
     <Compile Include="Features\FileHandlers\CsvFileHandlerTest.cs" />
     <Compile Include="Features\FileHandlers\FileHandlerResolverTest.cs" />

@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="App_Data\InputFile\Customer.csv" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
@@ -98,6 +99,7 @@
     <Content Include="App_Data\InvitationTemplate.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="App_Data\SampleOutputFile\1_Smith.TXT" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

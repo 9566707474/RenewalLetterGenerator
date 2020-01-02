@@ -7,6 +7,7 @@
     using RenewalLetterGenerator.Features.DataExtractor;
     using RenewalLetterGenerator.Models;
     using RenewalLetterGenerator.Tests.Unit.Builders.Models;
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
@@ -55,7 +56,7 @@
         public void TestProcessEngineAsExpected()
         {
             SetupMockConfigurationManagerFacade();
-            SetupMockFileSystemGetFiles(fileName);
+            SetupMockFileSystemGetFiles(new List<string> { fileName });
             SetupMockFileSystemGetFileType(fileName);
             SetupMockFileSystemReadAllText(outputTemplatePath, string.Empty);
             SetupMockDataExtractor(fileName, BuildCustomerProductList());
@@ -64,6 +65,27 @@
             mockFileSystem.Verify(m => m.GetFileType(fileName), Times.Once);
             mockFileSystem.Verify(m => m.ReadAllText(outputTemplatePath), Times.Once);
             mockDataExtractor.Verify(m => m.GetCustomerProductsFromFile(inputFilePattern, fileName), Times.Once);
+        }
+
+        [TestMethod]
+        public void TestProcessEngineAsExpectedWithZeroFileCount()
+        {
+            SetupMockConfigurationManagerFacade();
+            SetupMockFileSystemGetFiles(new List<string>());
+            underTest.Start();
+            mockFileSystem.Verify(m => m.GetFiles(inputFileLocation, inputFilePattern), Times.Once);
+            mockFileSystem.Verify(m => m.GetFileType(fileName), Times.Never);
+            mockFileSystem.Verify(m => m.ReadAllText(outputTemplatePath), Times.Never);
+            mockDataExtractor.Verify(m => m.GetCustomerProductsFromFile(inputFilePattern, fileName), Times.Never);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void TestProcessEngineAsExpectedWithNullFileSystem()
+        {
+            SetupMockConfigurationManagerFacade();
+            SetupMockFileSystemGetFiles(null);
+            underTest.Start();
         }
 
         #region Private methods
@@ -83,9 +105,9 @@
             mockConfigurationManagerFacade.Setup(m => m.OutputFileLocation).Returns(inputFileLocation);
         }
 
-        private void SetupMockFileSystemGetFiles(string fileName)
+        private void SetupMockFileSystemGetFiles(ICollection<string> fileNames)
         {
-            mockFileSystem.Setup(m => m.GetFiles(inputFileLocation, inputFilePattern)).Returns(new List<string>() { fileName });
+            mockFileSystem.Setup(m => m.GetFiles(inputFileLocation, inputFilePattern)).Returns(fileNames);
         }
 
         private void SetupMockFileSystemGetFileType(string fileName)
@@ -98,7 +120,7 @@
             mockFileSystem.Setup(m => m.ReadAllText(fileName)).Returns(output);
         }
 
-        private void SetupMockDataExtractor(string fileName,ICollection<CustomerProduct> customerProducts)
+        private void SetupMockDataExtractor(string fileName, ICollection<CustomerProduct> customerProducts)
         {
             mockDataExtractor.Setup(m => m.GetCustomerProductsFromFile(inputFilePattern, fileName)).Returns(customerProducts);
         }
