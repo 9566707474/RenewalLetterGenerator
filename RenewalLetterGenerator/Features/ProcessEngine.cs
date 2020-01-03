@@ -72,7 +72,7 @@
                 payments.Add(new Payments(item));
             }
 
-            var parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount };
+            var parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = ConfigurationManagerFacade.NumberOfProcessor };
 
             Parallel.ForEach(payments, parallelOptions, task =>
             {
@@ -99,7 +99,7 @@
                 });
             }
 
-            var parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount };
+            var parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = ConfigurationManagerFacade.NumberOfProcessor };
 
             Parallel.ForEach(generateOutputFile, parallelOptions, task =>
             {

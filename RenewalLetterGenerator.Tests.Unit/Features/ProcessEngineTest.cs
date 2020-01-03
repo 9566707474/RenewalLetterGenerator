@@ -34,6 +34,8 @@
 
         private string outputTemplatePath;
 
+        private int processCount;
+
         [TestInitialize]
         public void TestInitialize()
         {
@@ -44,6 +46,8 @@
             inputFileLocation = @"C\test\";
 
             inputFilePattern = ".CSV";
+
+            processCount = 4;
 
             fileName = string.Empty;
 
@@ -103,6 +107,7 @@
             mockConfigurationManagerFacade.Setup(m => m.InputFileLocation).Returns(inputFileLocation);
             mockConfigurationManagerFacade.Setup(m => m.InputFilePattern).Returns(inputFilePattern);
             mockConfigurationManagerFacade.Setup(m => m.OutputFileLocation).Returns(inputFileLocation);
+            mockConfigurationManagerFacade.Setup(m => m.NumberOfProcessor).Returns(processCount);
         }
 
         private void SetupMockFileSystemGetFiles(ICollection<string> fileNames)
